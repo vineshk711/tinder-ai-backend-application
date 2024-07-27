@@ -18,7 +18,7 @@ public class TinderAiBackendApplication  implements CommandLineRunner {
 		SpringApplication.run(TinderAiBackendApplication.class, args);
 	}
 
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		Profile profile = new Profile(
 				"1",
 				"Vinesh",
