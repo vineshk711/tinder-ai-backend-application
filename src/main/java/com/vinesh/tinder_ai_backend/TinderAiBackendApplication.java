@@ -6,6 +6,9 @@ import com.vinesh.tinder_ai_backend.conversations.ConversationRepository;
 import com.vinesh.tinder_ai_backend.profiles.Gender;
 import com.vinesh.tinder_ai_backend.profiles.Profile;
 import com.vinesh.tinder_ai_backend.profiles.ProfileRepository;
+import groovy.util.logging.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,8 +17,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @SpringBootApplication
 public class TinderAiBackendApplication  implements CommandLineRunner {
+
+	private static final Logger log = LoggerFactory.getLogger(TinderAiBackendApplication.class);
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -27,6 +33,10 @@ public class TinderAiBackendApplication  implements CommandLineRunner {
 	}
 
 	public void run(String... args) {
+
+		profileRepository.deleteAll();
+		conversationRepository.deleteAll();
+
 		Profile profile = new Profile(
 				"1",
 				"Vinesh",
@@ -38,8 +48,9 @@ public class TinderAiBackendApplication  implements CommandLineRunner {
 				"foo.jpg",
 				"INTP"
 		);
+
 		profileRepository.save(profile);
-		profileRepository.findAll().forEach(System.out::println);
+		profileRepository.findAll().forEach(p -> log.info(p.toString()));
 
 		Conversation conversation = new Conversation("1",
 				profile.id(),
@@ -49,7 +60,7 @@ public class TinderAiBackendApplication  implements CommandLineRunner {
 		);
 
 		conversationRepository.save(conversation);
-		conversationRepository.findAll().forEach(System.out::println);
+		conversationRepository.findAll().forEach(c -> log.info(c.toString()));
 	}
 
 }
