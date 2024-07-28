@@ -9,6 +9,8 @@ import com.vinesh.tinder_ai_backend.profiles.ProfileRepository;
 import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,12 +29,18 @@ public class TinderAiBackendApplication implements CommandLineRunner {
     private ProfileRepository profileRepository;
     @Autowired
     private ConversationRepository conversationRepository;
+    @Autowired
+    private OpenAiChatModel chatModel;
 
     public static void main(String[] args) {
         SpringApplication.run(TinderAiBackendApplication.class, args);
     }
 
     public void run(String... args) {
+
+
+        String response =  this.chatModel.call(new Prompt("Who are you?")).getResult().getOutput().getContent();
+        System.out.println(response);
 
         profileRepository.deleteAll();
         conversationRepository.deleteAll();

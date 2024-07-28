@@ -46,6 +46,17 @@ public class ConversationController {
         return conversation;
     }
 
+    @GetMapping("/conversations/{conversationId}")
+    public Conversation getConversation(
+            @PathVariable String conversationId
+    ) {
+        return conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Conversation not found with ID: " + conversationId
+                ));
+    }
+
     @PutMapping("/conversations/{conversationId}")
     public Conversation addMessageToConversation(
             @PathVariable String conversationId,
